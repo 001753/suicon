@@ -1,0 +1,1 @@
+{"name":"sui-agent-commerce","private":true,"type":"module","scripts":{"api":"node apps/api/server.mjs","test":"node --test tests/integration/*.test.mjs"}}

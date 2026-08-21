@@ -1,0 +1,8 @@
+[package]
+name = "agent_commerce"
+edition = "2024.beta"
+
+[dependencies]
+
+[addresses]
+agent_commerce = "0x0"
