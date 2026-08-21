@@ -13,7 +13,9 @@
 ## Current scope
 
 Tier D local vertical slice is implemented. It uses a deterministic mock provider and
-explicit `local-demo` execution mode because no live AI provider or Sui CLI is configured.
+explicit `local-demo` execution mode because no live AI provider is configured. The Sui
+CLI is installed for testnet Move build/test and publish attempts, but on-chain publish
+still requires a funded signer that is available to the CLI.
 The submission track and deadline have not been confirmed from an official source.
 
 ## Wallet safety
