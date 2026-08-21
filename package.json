@@ -1,1 +1,1 @@
-{"name":"sui-agent-commerce","private":true,"type":"module","scripts":{"api":"node apps/api/server.mjs","test":"node --test tests/integration/*.test.mjs"}}
+{"name":"sui-agent-commerce","private":true,"type":"module","scripts":{"api":"node apps/api/server.mjs","test":"node --test tests/integration/*.test.mjs","contract:test":"sui move test --path contracts/agent_commerce","contract:build":"sui move build --path contracts/agent_commerce"}}

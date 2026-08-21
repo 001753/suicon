@@ -19,3 +19,8 @@ test("schema rejects malformed reason hash", () => {
 });
 test("network mismatch is rejected", () => assert.throws(() => assertNetwork("mainnet"), /E_NETWORK_MISMATCH/));
 test("reason hash is deterministic", () => assert.equal(sha256Reason("hello"), sha256Reason("hello")));
+test("over-budget request is rejected by the deterministic planner", () => {
+  const p = planRequest({ userRequest: "Render a 2 SUI image", serviceId: "image-render", perTxLimit: "100000000" });
+  assert.equal(p.allowed, false);
+  assert.deepEqual(p.reasons, ["policy_limit_exceeded", "per_tx_limit_exceeded"]);
+});

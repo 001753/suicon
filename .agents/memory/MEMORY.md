@@ -1,0 +1,1 @@
+- [Sui CLI availability](sui-cli-availability.md) — verify the workflow shell separately; imported setup notes may be stale even when the app itself runs.

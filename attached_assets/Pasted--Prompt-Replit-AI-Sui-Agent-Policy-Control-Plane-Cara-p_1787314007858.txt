@@ -1,0 +1,576 @@
+# Prompt Replit AI — Sui Agent Policy Control Plane
+
+## Cara pakai
+
+- Ini adalah **4 prompt terpisah**, satu per tahap roadmap: Step 0 (gerbang), Tahap Now/Tier D, Tahap Next/Tier F, Tahap Later.
+- Jalankan **satu per satu, berurutan**, di sesi Replit AI (Agent atau Chat). Jangan tempel semuanya sekaligus.
+- **Jangan mulai Prompt 2 sebelum Prompt 1 selesai dan diverifikasi.** Setiap prompt punya bagian "Bukti yang wajib ditunjukkan" — jangan lanjut ke tahap berikutnya sampai bukti itu benar-benar ada (output terminal asli, bukan klaim).
+- Setiap prompt bersifat **mandiri** (self-contained) — semua konteks teknis yang dibutuhkan sudah disalin ulang di dalamnya, supaya kalau kamu buka sesi baru di Replit AI, tidak ada informasi yang hilang.
+- Setiap prompt punya blok **"Aturan anti-halusinasi"** yang wajib dipatuhi Replit AI secara harfiah.
+
+---
+---
+
+# PROMPT 1/4 — Step 0: Gerbang verifikasi (WAJIB sebelum kode apa pun)
+
+```
+Kamu adalah AI engineering assistant di Replit yang membantu saya menyiapkan proyek
+"Sui Agent Policy Control Plane" — sebuah control plane berbasis Sui Move yang
+memungkinkan AI agent membayar layanan digital dalam batas kebijakan yang
+di-enforce on-chain.
+
+INI ADALAH TAHAP 0. Tugasmu di tahap ini BUKAN menulis kode. Tugasmu adalah
+memverifikasi fakta-fakta yang menentukan seluruh rencana kerja, dan berhenti
+untuk bertanya jika ada yang tidak bisa dipastikan.
+
+=== ATURAN ANTI-HALUSINASI (WAJIB, BERLAKU DI SELURUH PERCAKAPAN INI) ===
+
+1. Jangan pernah mengklaim sesuatu "sudah terverifikasi" atau "sudah berjalan"
+   kecuali kamu benar-benar menjalankan perintah dan menunjukkan output
+   terminal aslinya di jawabanmu.
+2. Jangan pernah mengarang nomor versi, nama package, URL dokumentasi, atau
+   command line flag yang tidak kamu ketahui pasti. Jika tidak yakin, katakan
+   "saya tidak yakin" dan cari tahu (search web / baca dokumentasi resmi)
+   sebelum menjawab.
+3. Jangan pernah mengarang object ID, package ID, transaction digest, atau
+   angka saldo. Semua ID on-chain HARUS berasal dari output nyata perintah
+   `sui client` / `sui move` / hasil publish yang sungguh dijalankan.
+4. Jika sebuah keputusan bergantung pada informasi yang hanya saya (user)
+   yang punya — misalnya tanggal deadline resmi, aturan submission hackathon,
+   atau ketersediaan API key — JANGAN MENGASUMSIKAN. Tulis pertanyaan yang
+   jelas ke saya dan berhenti (STOP) sampai saya jawab.
+5. Setiap kali kamu tidak yakin apakah sebuah API/fungsi/struct di Sui Move
+   ada atau bekerja seperti yang kamu kira, verifikasi dulu ke dokumentasi
+   resmi Sui (docs.sui.io) atau contoh kode resmi di repo MystenLabs/sui
+   di GitHub sebelum menuliskannya sebagai fakta.
+6. Di akhir setiap balasan, sertakan bagian "Bukti" berisi output command
+   yang benar-benar kamu jalankan. Kalau kamu tidak menjalankan apa-apa,
+   tulis "Tidak ada bukti eksekusi pada langkah ini" — jangan diam-diam
+   melewatkannya.
+
+=== TUGAS TAHAP 0 ===
+
+Lakukan langkah-langkah berikut secara berurutan, dan laporkan hasil tiap
+langkah sebelum lanjut ke langkah berikutnya:
+
+1. Cek environment Replit ini:
+   - Jalankan `sui --version` (atau tunjukkan bahwa Sui CLI belum terpasang).
+   - Jalankan `node --version` dan `npm --version`.
+   - Laporkan hasil ASLI dari ketiga perintah itu. Jika Sui CLI belum ada,
+     jangan asumsikan cara instalasinya — cari instruksi resmi instalasi
+     Sui CLI untuk environment Linux/Replit dari docs.sui.io, kutip
+     sumbernya, baru jalankan.
+
+2. Cek jaringan Sui testnet:
+   - Jalankan `sui client envs` atau perintah setara untuk memastikan
+     testnet dapat diakses dari environment ini.
+   - Jika gagal karena keterbatasan jaringan Replit, laporkan pesan error
+     ASLI-nya ke saya, jangan berasumsi itu "pasti berhasil nanti".
+
+3. TANYAKAN ke saya secara eksplisit (tulis sebagai pertanyaan, tunggu
+   jawaban saya sebelum lanjut) hal-hal berikut — JANGAN diisi dengan
+   asumsi sendiri:
+   a. Apakah saya sudah punya wallet Sui testnet + private key/mnemonic
+      yang boleh dipakai di Replit ini? Jika belum, saya perlu membuat
+      wallet baru — konfirmasi dulu ke saya sebelum generate keypair baru.
+   b. Apakah saya sudah mengonfirmasi lewat sumber resmi (situs Sui
+      Overflow atau handbook peserta terbaru) bahwa track "The Agentic
+      Web" masih berlaku dan apa deadline submission-nya? Jika saya belum
+      konfirmasi, ingatkan saya bahwa seluruh rencana kerja di bawah ini
+      diasumsikan sebagai "Tier D saja, tanpa klaim submission resmi" sampai
+      saya konfirmasi.
+   c. AI provider apa yang tersedia untuk saya pakai di proyek ini (API key
+      apa yang sudah saya siapkan)? Jangan mengasumsikan provider tertentu.
+
+4. Setelah saya menjawab pertanyaan di atas, buatkan struktur folder repo
+   KOSONG (belum ada logic) persis seperti ini — jangan menambah atau
+   mengurangi folder:
+
+   sui-agent-commerce/
+   ├── apps/
+   │   ├── web/
+   │   └── api/
+   ├── packages/
+   │   ├── domain/
+   │   ├── sui-client/
+   │   ├── agent-core/
+   │   ├── service-adapters/
+   │   └── ui/
+   ├── contracts/
+   │   └── agent_commerce/
+   ├── scripts/
+   ├── docs/
+   ├── tests/
+   │   ├── contract/
+   │   ├── integration/
+   │   └── fixtures/
+   ├── .env.example
+   ├── README.md
+   └── replit.md
+
+5. Isi README.md HANYA dengan: nama proyek, satu paragraf deskripsi (salin
+   dari deskripsi produk di bawah), status "Tier D — belum mulai
+   implementasi", dan daftar prasyarat (Sui CLI, Node version, wallet
+   testnet). Jangan menulis klaim fitur yang belum ada.
+
+DESKRIPSI PRODUK (gunakan persis ini, jangan diparafrase jadi tidak akurat):
+"Sui Agent Policy Control Plane adalah control plane berbasis Sui-native
+yang memungkinkan AI agent menemukan layanan digital terdaftar, menyiapkan
+payment intent, membuktikan kepatuhan pada kebijakan yang ditentukan
+manusia, mengeksekusi pembayaran di Sui, dan melampirkan bukti/receipt
+terverifikasi pada hasil kerja. Bukan wallet, bukan trading bot, bukan
+payment rail baru — melainkan lapisan otorisasi kebijakan yang di-enforce
+lewat Move object."
+
+=== SELESAI TAHAP 0 KETIKA ===
+
+- [ ] Sui CLI versi tercatat dengan output asli.
+- [ ] Koneksi ke testnet terkonfirmasi dengan output asli (atau error asli
+      dilaporkan dan didiskusikan).
+- [ ] Ketiga pertanyaan di atas sudah saya jawab.
+- [ ] Struktur folder di atas sudah dibuat persis.
+- [ ] README.md draf awal sudah ada.
+
+JANGAN menulis satu baris pun Move code atau React code di tahap ini.
+Jika kamu merasa "sudah cukup jelas jadi langsung saja saya buat
+kontraknya" — JANGAN. Berhenti di sini dan tunggu saya membuka Prompt 2/4.
+```
+
+---
+---
+
+# PROMPT 2/4 — Now / Tier D: Vertical slice (lantai submission minimum)
+
+```
+Lanjutan proyek "Sui Agent Policy Control Plane" di Replit. Tahap 0 (setup
+environment, wallet, dan konfirmasi track/deadline) SUDAH SELESAI. Sekarang
+kita masuk ke Tier D — implementasi minimum yang harus terbukti bekerja
+end-to-end di depan juri, dalam waktu di bawah 3 menit, termasuk satu jalur
+sukses dan satu jalur penolakan.
+
+=== ATURAN ANTI-HALUSINASI (WAJIB, BERLAKU DI SELURUH PERCAKAPAN INI) ===
+
+1. Jangan mengklaim test "PASS" tanpa benar-benar menjalankan test runner
+   dan menunjukkan output aslinya (termasuk jika ada test yang FAIL —
+   laporkan apa adanya, jangan disembunyikan atau dipoles).
+2. Jangan mengarang syntax Sui Move. Sebelum menulis satu struct atau
+   function Move apa pun, cek dulu versi toolchain yang terpasang
+   (`sui move --version` atau setara) dan sesuaikan syntax dengan versi
+   itu. Jika ragu antara dua kemungkinan syntax, coba compile
+   (`sui move build`) dan laporkan error compiler yang SEBENARNYA, jangan
+   menebak apakah kode akan berhasil.
+3. Jangan mengarang object ID, package ID, atau transaction digest.
+   Semuanya harus hasil `sui client publish` / `sui client call` yang
+   sungguh dijalankan di testnet, dan kamu WAJIB menempelkan output asli
+   command tersebut.
+4. Jika kamu menemukan requirement di bawah yang tidak jelas atau tampak
+   kontradiktif, JANGAN menebak maksudnya sendiri. Tanyakan ke saya secara
+   eksplisit sebelum melanjutkan bagian itu.
+5. Jangan menandai item checklist "Definition of Done" sebagai selesai
+   kecuali ada bukti eksekusi nyata yang menunjukkannya. Checklist ini
+   akan saya periksa satu per satu — kalau kamu menandai centang tanpa
+   bukti, itu dianggap pelanggaran serius terhadap instruksi ini.
+6. Kerjakan dalam potongan kecil dan berurutan (satu objek Move / satu
+   endpoint / satu komponen UI per giliran), commit/simpan progres, dan
+   tunjukkan hasil verifikasi SEBELUM pindah ke bagian berikutnya. Jangan
+   menulis seluruh sistem sekaligus dalam satu balasan raksasa yang tidak
+   bisa saya verifikasi bagian per bagian.
+7. Semua nilai konfigurasi (network, package ID, object ID) harus berada
+   di file konfigurasi terpusat, TIDAK boleh di-hardcode berulang di
+   banyak file.
+
+=== BATASAN SCOPE TAHAP INI (TIER D SAJA) ===
+
+JANGAN membangun hal-hal berikut di tahap ini — ini masuk Tier F/Later dan
+akan dikerjakan di prompt terpisah:
+- alur human-approval-required (approval threshold)
+- dashboard kebijakan penuh (UI besar untuk mengubah semua field policy)
+- sponsored transaction / zkLogin / gas abstraction
+- integrasi Walrus
+- adapter x402 / A2A / AP2
+- provider SDK pihak ketiga
+- rate limiting production-grade, indexer aktivitas canggih
+
+Kalau kamu tergoda menambahkan salah satu di atas karena "sekalian saja",
+JANGAN. Fokus hanya pada daftar di bawah.
+
+=== SPESIFIKASI TEKNIS PERSIS (jangan diubah tanpa konfirmasi saya) ===
+
+STACK: Sui Move (contract) + TypeScript/React (web) + Node.js (API).
+Deployment: Sui TESTNET saja.
+
+--- Model objek Move (konsep, sesuaikan syntax dengan toolchain nyata) ---
+
+AgentAccount:
+  id, owner/capability, status (ACTIVE|REVOKED), policy_version,
+  per_tx_limit, daily_limit, spent_today, day_bucket, last_nonce
+
+Service:
+  id, service_id, recipient, asset_type, price, metadata_uri, active
+
+PaymentIntent:
+  intent_id (UUID v4, unik global — dicek via lookup on-chain untuk cegah
+    settle dua kali), agent_account_id, service_id, recipient, amount,
+    asset_type, reason_hash (sha256 dari reason plaintext — reason
+    plaintext-nya TIDAK disimpan on-chain, hanya di API layer), expires_at,
+    nonce (counter sekuensial per-account, harus == AgentAccount.last_nonce
+    + 1 — ini BEDA dari intent_id, dua-duanya wajib ada dan tidak boleh
+    disatukan)
+
+PaymentReceipt:
+  id, intent_id, service_id, amount, recipient, settled_at,
+  artifact_uri (opsional, boleh dikosongkan di Tier D)
+
+--- Aturan day_bucket (WAJIB, jangan diubah logikanya) ---
+
+day_bucket dihitung on-chain dari Sui shared Clock object:
+  day_bucket = Clock.timestamp_ms() / 86_400_000
+Ini adalah window UTC TETAP (fixed), BUKAN rolling 24 jam. spent_today
+direset ke 0 saat transaksi pertama diproses pada day_bucket baru. JANGAN
+memakai timestamp dari client atau wall-clock off-chain untuk ini — HARUS
+pakai Clock shared object Sui. Dokumentasikan di threat-model.md bahwa ada
+edge case di sekitar batas UTC (dua transaksi terpisah ~1 menit yang
+melintasi tengah malam UTC bisa lolos dua kali limit harian) — ini
+simplifikasi yang disengaja, bukan bug yang harus diperbaiki di Tier D.
+
+--- Invariant Move yang WAJIB dites (positive DAN negative test untuk
+    setiap satu, jangan hanya positive) ---
+
+- hanya owner/capability berwenang yang bisa mengubah policy
+- akun revoked tidak bisa settle
+- intent kedaluwarsa tidak bisa settle
+- pembayaran tidak boleh melebihi per_tx_limit
+- total harian tidak boleh melebihi daily_limit (dites termasuk kasus
+  batas UTC di atas)
+- recipient harus cocok dengan service yang terdaftar
+- intent_id yang sama tidak bisa settle dua kali
+- nonce harus sekuensial (nonce != last_nonce + 1 harus gagal)
+- jumlah di receipt harus sama persis dengan jumlah yang settle
+- policy check yang gagal TIDAK BOLEH mengubah spent_today
+- semua jalur settlement sukses memancarkan event kanonik yang sama
+
+--- Error taxonomy PERSIS ini, jangan tambah/kurang tanpa konfirmasi ---
+
+E_ACCOUNT_NOT_ACTIVE
+E_POLICY_EXPIRED
+E_TX_LIMIT_EXCEEDED
+E_DAILY_LIMIT_EXCEEDED
+E_SERVICE_NOT_FOUND
+E_SERVICE_INACTIVE
+E_RECIPIENT_MISMATCH
+E_INTENT_EXPIRED
+E_INTENT_ALREADY_SETTLED
+E_NONCE_OUT_OF_ORDER
+E_UNSUPPORTED_ASSET
+E_UNAUTHORIZED_OWNER
+E_INSUFFICIENT_BALANCE
+E_NETWORK_MISMATCH
+
+--- Kontrak API PERSIS ini (field names harus sama persis) ---
+
+POST /api/intents/prepare
+Request:
+{
+  "agentAccountId": "0x...",
+  "userRequest": "teks natural language dari user",
+  "serviceId": "id-layanan-terdaftar"
+}
+Response:
+{
+  "intentId": "string",
+  "status": "POLICY_CHECKED",
+  "serviceId": "string",
+  "recipient": "0x...",
+  "amount": "string (dalam unit terkecil)",
+  "asset": "SUI",
+  "reason": "teks plaintext yang bisa dibaca manusia",
+  "reasonHash": "sha256:...",
+  "nonce": number,
+  "policyDecision": {
+    "allowed": boolean,
+    "requiresApproval": boolean,
+    "reasons": []
+  },
+  "expiresAt": "ISO8601"
+}
+
+POST /api/intents/:intentId/execute
+- Server WAJIB re-validasi ulang semua field kritis, TIDAK BOLEH percaya
+  amount/recipient dari client.
+- Server WAJIB verifikasi sha256(reason) === reasonHash sebelum
+  menampilkan reason ke UI sebagai teks tepercaya. Jika tidak cocok,
+  tampilkan status "integrity mismatch", JANGAN tampilkan reason-nya.
+- Response harus berisi: transaction digest, receipt ID, status akhir.
+
+--- UI wajib menampilkan reason PLAINTEXT yang sudah diverifikasi hash-nya,
+    bukan hash mentah, ke pengguna sebelum eksekusi. ---
+
+=== DAFTAR KERJA TIER D (urutkan persis seperti ini, satu per satu) ===
+
+1. Move package `contracts/agent_commerce`:
+   a. Buat struct AgentAccount + fungsi create/revoke + emit event.
+      Compile (`sui move build`), tempel output asli.
+   b. Buat struct Policy fields (per_tx_limit, daily_limit, day_bucket
+      pakai Clock) + fungsi update policy oleh owner saja. Tulis unit
+      test Move untuk unauthorized-mutation-must-fail. Jalankan
+      `sui move test`, tempel output asli (termasuk kalau ada yang gagal).
+   c. Buat struct Service + registry fungsi tambah/nonaktifkan service.
+      Test: recipient tidak bisa di-override dari luar registry.
+   d. Buat struct PaymentIntent + fungsi settle dengan SELURUH invariant
+      di atas. Tulis unit test POSITIF dan NEGATIF untuk SETIAP invariant
+      yang didaftar di atas — satu per satu, bukan digabung jadi satu test
+      besar. Jalankan `sui move test`, tempel output lengkap.
+   e. Buat struct PaymentReceipt + event emission.
+   f. Publish ke testnet (`sui client publish`). Tempel output ASLI berisi
+      package ID. Simpan package ID ini di file config terpusat, bukan
+      hardcode.
+
+2. `packages/domain`: schema TypeScript untuk Intent, Service,
+   PolicyDecision — field names harus sama persis dengan kontrak API di
+   atas. Gunakan validator schema (zod atau setara) sehingga semua output
+   model AI divalidasi sebelum dipakai.
+
+3. `packages/agent-core`: planner yang mengubah teks natural language jadi
+   typed service request, PLUS provider AI mock deterministik yang bisa
+   dipakai sebagai fallback. Uji bahwa mock dan live provider (jika API
+   key tersedia) menghasilkan keputusan policy yang sama untuk skenario
+   demo yang sama.
+
+4. `apps/api`: implementasi endpoint `/api/intents/prepare` dan
+   `/api/intents/:id/execute` persis sesuai kontrak di atas, termasuk
+   verifikasi reason-hash dan revalidasi semua field kritis di server.
+
+5. `apps/web`: UI minimal — connect wallet, buat agent account + policy,
+   input request natural language, tampilan hasil simulasi
+   (ALLOWED/APPROVAL_REQUIRED/REJECTED dengan daftar rule yang lolos/gagal),
+   tombol eksekusi, tampilan digest + link explorer, activity feed
+   sederhana. Simulator ini HARUS berdiri sendiri (bisa dites tanpa
+   dashboard kebijakan penuh — dashboard penuh itu tugas Tier F).
+
+6. Network-mismatch guard: app harus menolak render jika client config
+   menunjuk ke network yang tidak sesuai (mis. mainnet RPC padahal
+   seharusnya testnet). Tulis satu test untuk skenario ini.
+
+7. Demo reliability:
+   a. Script untuk pre-fund wallet demo dengan saldo testnet deterministik
+      (`scripts/fund-demo-wallets.ts`) — jalankan dan tunjukkan hasil asli.
+   b. Dua service seed di registry.
+   c. Tiga skenario demo: (1) pembayaran diterima, (2) ditolak karena
+      over-budget, (3) ditolak karena recipient tidak dikenal.
+   d. Jalankan ketiga skenario ini di testnet SUNGGUHAN tiga kali
+      berturut-turut, tempel output/digest asli setiap kali, dan ukur
+      total waktu dari "wallet sudah terhubung" sampai "receipt tampil" —
+      laporkan angka detik yang sebenarnya, bukan estimasi.
+
+8. `docs/threat-model.md`: tulis batasan yang sudah diketahui (termasuk
+   catatan batas UTC di atas), dan daftar apa yang TIDAK dijamin oleh
+   sistem ini di Tier D.
+
+=== SECURITY GATE TIER D — WAJIB LULUS SEMUA SEBELUM MENGANGGAP SELESAI ===
+
+Contract gate:
+- [ ] over-limit payment gagal (bukti test asli)
+- [ ] daily-limit overflow gagal, termasuk kasus batas UTC (bukti test asli)
+- [ ] unregistered service gagal (bukti test asli)
+- [ ] recipient mismatch gagal (bukti test asli)
+- [ ] expired intent gagal (bukti test asli)
+- [ ] revoked account gagal (bukti test asli)
+- [ ] duplicate intent_id gagal (bukti test asli)
+- [ ] out-of-order nonce gagal (bukti test asli)
+- [ ] failed transaction tidak mengubah saldo/accounting (bukti test asli)
+
+Agent gate:
+- [ ] agent tidak pernah memegang private key
+- [ ] agent hanya memilih service yang terdaftar
+- [ ] schema validation menolak output model yang malformed (bukti test)
+- [ ] prompt-injection test tidak bisa memaksa recipient sembarangan
+      (tulis minimal 1 skenario nyata dan buktikan gagal)
+- [ ] mock provider menghasilkan outcome sama dengan live provider di
+      skenario demo
+
+Application gate:
+- [ ] frontend tidak pernah dipercaya untuk amount/recipient (server
+      revalidasi, bukti dari kode + test)
+- [ ] reason-hash diverifikasi di server sebelum ditampilkan (bukti test)
+- [ ] tidak ada endpoint arbitrary-transfer
+- [ ] network-mismatch guard aktif (bukti test)
+
+Demo gate:
+- [ ] testnet banner selalu terlihat
+- [ ] wallet demo pre-funded, tidak bergantung pada faucet live saat demo
+- [ ] mock AI fallback teruji setara dengan live provider
+- [ ] skenario sukses berjalan 3x berturut-turut (bukti digest asli x3)
+- [ ] tiap skenario penolakan berjalan 3x berturut-turut (bukti asli x3)
+- [ ] total waktu demo end-to-end di bawah 3 menit (bukti angka asli)
+
+=== SELESAI TAHAP INI KETIKA ===
+
+Semua checklist di atas tercentang DENGAN bukti eksekusi nyata terlampir
+di balasanmu. Kalau ada satu saja yang tidak bisa kamu buktikan, laporkan
+itu sebagai BLOCKER ke saya secara eksplisit — jangan menandainya selesai
+"karena seharusnya begitu".
+
+JANGAN mulai membangun dashboard kebijakan penuh, alur approval, atau
+integrasi Walrus di tahap ini. Itu ada di Prompt 3/4.
+```
+
+---
+---
+
+# PROMPT 3/4 — Next / Tier F: Kualitas submission penuh
+
+```
+Lanjutan proyek "Sui Agent Policy Control Plane". Tier D (vertical slice
+minimum, security gate Tier D, dan demo 3x berturut-turut di bawah 3
+menit) SUDAH SELESAI dan LULUS SEMUA GATE. Sekarang kita menambah kualitas
+untuk submission penuh (Tier F). Tier D TIDAK BOLEH rusak oleh perubahan
+di tahap ini — semua test Tier D yang sudah lulus harus tetap lulus.
+
+=== ATURAN ANTI-HALUSINASI (WAJIB, SAMA SEPERTI TAHAP SEBELUMNYA) ===
+
+1. Sebelum menyentuh kode apa pun di tahap ini, jalankan ulang seluruh
+   test suite Tier D (`sui move test` + test suite TypeScript) dan
+   tunjukkan output asli bahwa semuanya masih lulus. Jika ada yang rusak,
+   STOP dan laporkan ke saya sebelum lanjut menambah fitur baru.
+2. Jangan mengklaim fitur baru "bekerja" tanpa test otomatis DAN
+   verifikasi manual di testnet sungguhan dengan bukti output asli.
+3. Jangan mengarang detail API pihak ketiga (Walrus, dsb). Cek dokumentasi
+   resmi sebelum menulis kode integrasi. Jika dokumentasi tidak jelas atau
+   API key/akses tidak tersedia, laporkan itu ke saya sebagai blocker,
+   jangan membuat mock yang berpura-pura jadi integrasi asli tanpa
+   memberitahu saya bahwa itu mock.
+4. Semua item di bawah ini HANYA dikerjakan jika waktu memungkinkan. Kerjakan
+   berurutan sesuai prioritas yang tercantum. Jika waktu habis di tengah
+   jalan, berhenti di item yang sedang dikerjakan dengan status yang jujur
+   (jangan setengah-selesai tapi diklaim selesai).
+5. Setiap penambahan field/endpoint baru harus tetap kompatibel dengan
+   kontrak API Tier D yang sudah ada (field lama tidak boleh dihapus/diubah
+   maknanya, hanya boleh ditambah field baru).
+
+=== PRIORITAS PENGERJAAN (urutkan sesuai daftar ini) ===
+
+1. Dashboard kebijakan penuh (`apps/web`) — terpisah secara arsitektur
+   dari policy simulator Tier D (simulator TIDAK boleh diubah untuk
+   bergantung pada dashboard ini). User bisa melihat dan mengubah seluruh
+   field policy dari sini.
+
+2. Alur human-approval-required:
+   - Tambahkan intent state APPROVAL_REQUIRED → APPROVED sebelum
+     SUBMITTED (state DRAFT → PROPOSED → POLICY_CHECKED → APPROVAL_REQUIRED
+     → APPROVED → SUBMITTED → SETTLED harus persis berurutan ini).
+   - Approval terikat ke field-field EKSAK: intent ID, account, service,
+     recipient, amount, asset, expiry, nonce — bukan hanya ke intentId
+     saja. Tulis test bahwa mengubah salah satu field setelah approval
+     membatalkan approval tersebut.
+   - Tulis test acceptance sesuai skenario: policy dengan ambang approval
+     0.5 SUI, payment 0.75 SUI harus pause dan menampilkan semua field
+     di atas sebelum user approve.
+
+3. Security gate tambahan yang tadinya di-skip di Tier D:
+   - [ ] unauthorized policy mutation gagal (tes ulang, bukti asli)
+   - [ ] unsupported asset type gagal sebelum transfer (bukti asli)
+   - [ ] rate limiting aktif di API (tunjukkan konfigurasi + test)
+   - [ ] approval terikat ke exact intent fields (bukti test)
+
+4. Sponsored transaction / onboarding lebih ringan (opsional, jika waktu
+   ada) — dokumentasikan dengan jelas jika ini disimulasikan vs benar-benar
+   gasless di testnet.
+
+5. Integrasi Walrus untuk artifact hasil kerja — HANYA jika akses Walrus
+   testnet tersedia dan dikonfirmasi bekerja dengan bukti nyata. Field
+   `artifact_uri` di PaymentReceipt (sudah ada strukturnya dari Tier D)
+   diisi di sini.
+
+6. Activity feed dengan indexing yang lebih baik + filter berdasarkan
+   status intent.
+
+7. Downloadable audit report (opsional) — harus akurat dan reproducible,
+   bukan data contoh yang di-hardcode.
+
+8. Polish UI responsif + rekam video demo (di luar scope coding, catat
+   sebagai to-do manual untuk saya).
+
+=== DEFINITION OF DONE TIER F ===
+
+- [ ] Semua Definition of Done Tier D masih lulus tanpa regresi (bukti
+      test ulang).
+- [ ] unauthorized policy mutation gagal (bukti test)
+- [ ] unsupported asset gagal sebelum transfer (bukti test)
+- [ ] Dashboard kebijakan penuh berfungsi dan hasilnya identik dengan
+      simulator Tier D untuk skenario yang sama (bukti perbandingan).
+- [ ] Alur approval-threshold berjalan end-to-end (bukti testnet asli).
+- [ ] Rate limiting terkonfigurasi (bukti konfigurasi + test).
+- [ ] Reconciliation untuk transaksi pending/gagal terdefinisi eksplisit
+      (bukti test atau demonstrasi).
+- [ ] Jika Walrus diintegrasikan: bukti nyata artifact tersimpan dan bisa
+      diambil kembali, bukan URI palsu.
+- [ ] Checklist submission resmi (dari hasil konfirmasi di Prompt 1/4)
+      diverifikasi ulang satu kali lagi sebelum submit.
+
+Laporkan progres per item, bukan sekaligus di akhir. Jika satu item
+tidak bisa diselesaikan karena keterbatasan waktu/akses, tandai eksplisit
+sebagai "tidak selesai — Tier D tetap valid untuk submission" — JANGAN
+mengklaim selesai untuk membuat laporan terlihat lengkap.
+```
+
+---
+---
+
+# PROMPT 4/4 — Later: Ekspansi produk (pasca-hackathon)
+
+```
+Proyek "Sui Agent Policy Control Plane" — Tier D dan Tier F sudah selesai
+dan (jika berlaku) sudah disubmit ke hackathon. Prompt ini HANYA relevan
+setelah submission selesai, dan HANYA dikerjakan jika saya secara eksplisit
+memutuskan untuk melanjutkan proyek ini pasca-hackathon. Jangan mulai
+mengerjakan apa pun di prompt ini sebelum saya konfirmasi bahwa kita masuk
+fase pasca-hackathon.
+
+=== ATURAN ANTI-HALUSINASI (WAJIB, SAMA SEPERTI SEBELUMNYA) ===
+
+1. Sebelum fase ini dimulai, jalankan ulang seluruh test suite Tier D +
+   Tier F dan tunjukkan output asli bahwa semuanya masih lulus di
+   environment saat ini (dependency/toolchain mungkin sudah berubah sejak
+   hackathon).
+2. Setiap item di bawah ini adalah ARAH, bukan spesifikasi siap-implementasi
+   — sebelum menulis kode untuk salah satu item, buat dulu spesifikasi
+   detail terpisah (struct, invariant, error code, API contract) dengan
+   format yang sama seperti di Prompt 2/4, dan minta konfirmasi saya
+   sebelum mulai coding. Jangan langsung menebak detail desainnya sendiri.
+3. PENTING — gerbang mainnet: proyek ini TIDAK BOLEH menerima dana
+   sungguhan atau di-deploy ke mainnet Sui dalam kondisi apa pun sampai
+   seluruh daftar berikut selesai dan saya konfirmasi secara eksplisit
+   satu per satu:
+   - [ ] audit smart contract independen
+   - [ ] review capability, ownership, upgrade-authority, dan shared-object
+         di Move
+   - [ ] fuzz testing, property testing, invariant testing, regression
+         testing
+   - [ ] audit dependency dan supply-chain
+   - [ ] review mekanisme upgrade dan emergency-pause
+   - [ ] review manajemen kunci admin/multisig
+   - [ ] rencana monitoring, alerting, rate-limit, dan incident response
+   - [ ] review risiko ekonomi aset mainnet
+   - [ ] review legal/compliance sesuai yurisdiksi deployment
+   Jika saya meminta "deploy ke mainnet" tanpa daftar di atas selesai,
+   TOLAK permintaan itu dan tunjukkan checklist ini kembali ke saya.
+
+=== ARAH PENGEMBANGAN (kerjakan satu per satu, sesuai instruksi saya) ===
+
+1. Alur pendaftaran layanan publik (service provider bisa mendaftar
+   sendiri tanpa campur tangan tim).
+2. Provider SDK — developer pihak ketiga bisa menambah service baru tanpa
+   mengubah core contract policy/wallet.
+3. Kebijakan multi-mata-uang (bukan hanya SUI).
+4. Anggaran berulang (recurring budget), bukan hanya per-transaksi/harian.
+5. Peran multi-agen (multi-agent roles) dalam satu AgentAccount.
+6. Escrow dan milestone delivery untuk pekerjaan bertahap.
+7. Sistem reputasi dan resolusi sengketa antar service provider.
+8. Kontrol kebijakan tingkat enterprise (multi-user, hierarki approval).
+
+Untuk SETIAP item di atas, sebelum coding: tulis dulu (a) struct/model
+data yang diusulkan, (b) invariant yang harus dijaga, (c) error code baru
+yang dibutuhkan, (d) dampaknya ke kontrak API yang sudah ada (apakah
+breaking change atau backward-compatible) — dan tunjukkan itu ke saya
+untuk saya setujui sebelum implementasi dimulai.
+```

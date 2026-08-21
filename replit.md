@@ -2,16 +2,15 @@
 
 ## Setup verification
 
-- Sui CLI: `sui 1.78.0-d8459684b41e`
-- Sui Move CLI: `sui-move 1.78.0-d8459684b41e`
-- Active network: Sui testnet
-- Testnet RPC: `https://fullnode.testnet.sui.io:443`
-- Node.js: `v24.13.0`
-- npm: `11.6.2`
+- Current workflow shell: `sui: command not found`
+- Current runtime: Node.js `v20.20.0`, npm `10.8.2`
+- The intended network is Sui testnet only. Do not claim publish or digest output until the Sui CLI is installed and a funded wallet is available.
 
 ## Current scope
 
-Tier D has not started implementation. The submission track and deadline have not been confirmed from an official source, so this project makes no official submission claim. No live AI provider is configured; Tier D will use a deterministic mock provider.
+Tier D local vertical slice is implemented. It uses a deterministic mock provider and
+explicit `local-demo` execution mode because no live AI provider or Sui CLI is configured.
+The submission track and deadline have not been confirmed from an official source.
 
 ## Wallet safety
 

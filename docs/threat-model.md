@@ -14,6 +14,8 @@
 - `day_bucket = Clock.timestamp_ms() / 86_400_000` is a fixed UTC window, not a rolling 24-hour window. Two transactions approximately one minute apart across UTC midnight can pass separate daily windows. This is an intentional Tier D simplification.
 - There is no human approval threshold, sponsored transaction, zkLogin, Walrus artifact, third-party provider SDK, or production-grade rate limiting in Tier D.
 - A browser wallet adapter is optional for the simulator; an injected wallet is required for a real transaction.
+- The current Replit shell does not expose the Sui CLI (`sui: command not found`), so no Move build, publish, object ID, or transaction digest is claimed. Local settlement identifiers use the explicit `local-demo-*` prefix.
+- The in-memory API store is for the Tier D vertical slice only; restarting the server clears intents and accounting.
 
 ## Tier D non-goals
 
